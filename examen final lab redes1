@@ -1,0 +1,91 @@
+
+
+EXAMEN FINAL
+
+conf t
+int s1/1
+ip address 10.1.10.1 255.255.0.0
+no shutdown
+exit
+
+int f0/0
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit 
+exit
+
+sh ip int br
+
+conf t
+ip route 172.16.0.0 255.255.0.0 10.1.10.2
+exit
+
+conf t
+ip access-list extended 101
+deny icmp host 172.16.10.60 host 192.168.10.40
+deny icmp host 172.16.10.60 host 192.168.10.40 echo
+permit ip any any
+exit
+
+int f0/0
+ip access-group 101 out
+exit
+exit
+
+sh access-list
+
+
+
+vpcs
+
+1
+ip 192.168.10.20 255.255.255.0 192.168.10.1
+
+2
+ip 192.168.10.40 255.255.255.0 192.168.10.1
+
+
+
+
+
+
+R2
+conf t
+int s1/1
+ip address 10.1.10.2 255.255.0.0
+no shutdown
+exit
+
+int f0/0
+ip address 172.16.10.1 255.255.0.0
+no shutdown
+exit 
+exit
+
+sh ip int br
+
+conf t
+
+ip route 192.168.10.0 255.255.255.0 10.1.10.1
+exit
+
+conf t
+ip access-list extended 101
+deny icmp host 192.168.10.40 host 172.16.10.10
+deny icmp host 192.168.10.40 host 172.16.10.10 echo
+permit ip any any
+exit 
+
+int f0/0
+ip access-group 101 out
+exit
+exit
+
+
+vpcs
+
+3 
+ip 172.16.10.10 255.255.0.0 172.16.10.1
+
+4
+ip 172.16.10.60 255.255.0.0 172.16.10.1
